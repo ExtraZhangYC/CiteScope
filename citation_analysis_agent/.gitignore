@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+bootstrap.py
+# Mac
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Scripts
+run.sh
+
+# Papers
+storage/
+
+# Node Modules
+client/node_modules/
+
+# Database
+*.db
+
+# Logs
+*.log
+nohup.out
+
+report.md
+SourceHanSerifSC-VF.ttf

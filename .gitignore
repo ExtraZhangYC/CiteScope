@@ -1,0 +1,131 @@
+# ===========================================================
+# CiteScope · 引用视界  —  根目录 .gitignore
+# ===========================================================
+
+# ---------- 操作系统临时文件 ----------
+.DS_Store
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# ---------- IDE / 编辑器 ----------
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.code-workspace
+.cursor/
+
+# ---------- 本地启动脚本（不推送到仓库） ----------
+*.bat
+*.cmd
+*.sh
+
+# ---------- 后端运行时产物 ----------
+# Flask 启动时产生的日志（项目内已禁用日志文件，仅作为兜底）
+*.log
+*.log.*
+.flask_out.log
+.flask_err.log
+
+# 论文 PDF / 报告临时文件
+*.pdf~
+*.tmp
+*.bak
+
+# Python 缓存
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.venv/
+venv/
+env/
+ENV/
+
+# 虚拟环境
+env.bak/
+venv.bak/
+
+# 环境变量与本地密钥（务必不要提交）
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+*.pem
+*.key
+secrets/
+
+# 数据库与运行时数据
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+*.db-shm
+*.db-wal
+
+# 后端运行时目录（含下载的论文、报告等）
+storage/
+downloads/
+papers/
+!papers/.gitkeep
+reports/
+sessions/
+
+# ---------- 前端产物 ----------
+# Node / Vite
+node_modules/
+.pnp
+.pnp.js
+
+# 构建输出
+citation_analysis_front_end/dist/
+citation_analysis_front_end/dist-ssr/
+citation_analysis_front_end/build/
+citation_analysis_front_end/.vite/
+citation_analysis_front_end/coverage/
+
+# 前端缓存与日志
+citation_analysis_front_end/.cache/
+citation_analysis_front_end/.parcel-cache/
+citation_analysis_front_end/npm-debug.log*
+citation_analysis_front_end/yarn-debug.log*
+citation_analysis_front_end/yarn-error.log*
+citation_analysis_front_end/pnpm-debug.log*
+citation_analysis_front_end/lerna-debug.log*
+citation_analysis_front_end/.npm/
+citation_analysis_front_end/.eslintcache
+citation_analysis_front_end/.stylelintcache
+
+# 前端环境变量
+citation_analysis_front_end/.env
+citation_analysis_front_end/.env.local
+citation_analysis_front_end/.env.*.local
+
+# 编辑器生成的 React/Vue 配置
+*.local
+
+# ---------- 大文件 / 模型权重 ----------
+*.bin
+*.h5
+*.pkl
+*.pt
+*.onnx
+*.safetensors
+
+# ---------- 杂项 ----------
+*.tsbuildinfo
+*.tgz
+.cache/
+.parcel-cache/

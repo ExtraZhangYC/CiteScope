@@ -1,0 +1,1220 @@
+{
+  "info": {
+    "_postman_id": "1d377a8c-cda5-4795-93b0-e8eb0e6053de",
+    "name": "Paper API Collection Copy",
+    "description": "API tests for paper CRUD and citation functions. 登录后获取 token，填入 Collection Variables 的 token 中。",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "0. User Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nickname\": \"admin\",\n    \"password\": \"123456\",\n    \"email\": \"test@example.com\",\n    \"scholar_id\": \"PPqcVRwAAAAJ\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/users/register",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "users",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login (by Nickname)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "6d25da70-0fb5-4f3b-8c93-1014078cea37",
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.success && jsonData.data && jsonData.data.token) {",
+                  "    pm.collectionVariables.set('token', jsonData.data.token);",
+                  "    console.log('Token 已保存到 Collection Variables');",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "9c0c485d-081d-4639-a391-8f0e29f1ee0a",
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "id": "b2c3d4e5-f6a7-8901-bcde-f23456789012",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nickname\": \"admin\",\n    \"password\": \"123456\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/users/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "users",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Verify Token (Header)",
+          "id": "d4e5f6a7-b8c9-0123-def4-456789012345",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "需先登录获取 token，填入 Collection Variables"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/users/verify",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "users",
+                "verify"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Verify Token (Query)",
+          "id": "e5f6a7b8-c9d0-1234-ef45-567890123456",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/users/verify?token={{token}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "users",
+                "verify"
+              ],
+              "query": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "description": "需先登录获取 token"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "id": "f6a7b8c9-d0e1-2345-f456-678901234567",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/users/logout",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "users",
+                "logout"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "01234567-89ab-cdef-0123-456789abcdef"
+    },
+    {
+      "name": "0.1. User CRUD",
+      "item": [
+        {
+          "name": "List All Users",
+          "id": "12345678-9abc-def0-1234-56789abcdef0",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/users",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get User by ID",
+          "id": "23456789-abcd-ef01-2345-6789abcdef01",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/users/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "users",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create User (Admin)",
+          "id": "3456789a-bcde-f012-3456-789abcdef012",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nickname\": \"auth\",\n    \"password\": \"123456\",\n    \"email\": \"admin_created@example.com\",\n    \"scholar_id\": \"ADMIN123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/users",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Current User (me)",
+          "id": "a1b2c3d4-me01-4567-89ab-cdef01234567",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nickname\": \"更新后的昵称\",\n    \"email\": \"updated@example.com\",\n    \"scholar_id\":\"123456\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/users/me",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "users",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update User By Id",
+          "id": "456789ab-cdef-0123-4567-89abcdef0123",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nickname\": \"更新后的昵称\",\n    \"email\": \"updated@example.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/users/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "users",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update User Password",
+          "id": "56789abc-def0-1234-5678-9abcdef01234",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"password\": \"newpassword123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/users/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "users",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete User",
+          "id": "6789abcd-ef01-2345-6789-abcdef012345",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/users/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "users",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "789abcde-f012-3456-789a-bcdef0123456"
+    },
+    {
+      "name": "1. Papers CRUD",
+      "item": [
+        {
+          "name": "Delete Paper",
+          "id": "52963394-5cb3-4ff0-afb4-a373909e3126",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/papers/7",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "papers",
+                "7"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Paper",
+          "id": "9c74c1b1-758e-4a47-bf46-bf579c3f82c3",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"aiXcoder-7B: A Lightweight and Effective Large Language Model for Code Completion\",\n    \"year\": 2024\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/papers/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "papers",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Paper by ID",
+          "id": "c592db3f-8716-4a59-9521-72af06abe190",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/papers/5",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "papers",
+                "5"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List All Papers",
+          "id": "7ead9b07-1d95-48f5-ba70-b6c52ecddd20",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/papers",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "papers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add Paper",
+          "id": "9afb9c8c-bcbd-47c8-8549-ab0ef9330fe1",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n            \"authors\": [\r\n                \"Y Dong\",\r\n                \"G Li\",\r\n                \"Y Tao\",\r\n                \"X Jiang\",\r\n                \"K Zhang\",\r\n                \"J Li\"\r\n            ],\r\n            \"citation_number\": 12,\r\n            \"cite_link\": \"https://serpapi.com/search.json?as_sdt=5%2C36&cites=350001115321041602&engine=google_scholar&hl=en\",\r\n            \"link\": \"https://openreview.net/forum?id=Xpi0LpWbvF\",\r\n            \"result_id\": \"woKz9Sh02wQJ\",\r\n            \"summary\": \"Y Dong, G Li, Y Tao, X Jiang, K Zhang, J Li… - The Thirty-ninth …, 2025 - openreview.net\",\r\n            \"title\": \"Fourier Analysis Network\"\r\n        }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/papers",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "papers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "my_paper (GET)",
+          "id": "fba72150-5e1a-40ff-a5ae-28aa08058271",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/my/PPqcVRwAAAAJ/articles",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "my",
+                "PPqcVRwAAAAJ",
+                "articles"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "my_paper (POST)",
+          "id": "1ba1155e-dc9b-44fc-b4ea-a1cb1482286d",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/my/PPqcVRwAAAAJ/articles",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "my",
+                "PPqcVRwAAAAJ",
+                "articles"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "author_paper",
+          "id": "3d133ed7-1960-46fb-ab2e-76353612c8bf",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/authors/PPqcVRwAAAAJ/articles",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "authors",
+                "PPqcVRwAAAAJ",
+                "articles"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "模糊搜索",
+          "id": "2e2d1158-dd41-47b9-baf7-de3655a61691",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/papers/fuzzy_search?title=Fourier Analysis Networks",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "papers",
+                "fuzzy_search"
+              ],
+              "query": [
+                {
+                  "key": "title",
+                  "value": "Fourier Analysis Networks",
+                  "uuid": "7115c752-13e8-4917-8173-15753badbb87"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "ae0bdeda-42d5-46a5-be44-369d71d74d03"
+    },
+    {
+      "name": "2. Citations Query",
+      "item": [
+        {
+          "name": "Upload Citation PDF",
+          "id": "37849c63-3deb-48d4-b450-25c0b699775d",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "uuid": "b0a7ab22-581a-47cf-ace0-052ef2ae54ab",
+                  "src": [
+                    "/C:/Users/50438/Downloads/Invoice-DIYZYVUB-0004.pdf"
+                  ]
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:5000/papers/3/citations/12/upload",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "papers",
+                "3",
+                "citations",
+                "12",
+                "upload"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List Citations (paper 引文列表)",
+          "id": "351f20f8-7dc0-4fb8-9695-9f410b6c0dc7",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/papers/8/citations",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "papers",
+                "8",
+                "citations"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "4a4241ea-87c3-43d8-9c85-8e035eb69391"
+    },
+    {
+      "name": "3. Download Citations",
+      "item": [
+        {
+          "name": "Download Citations by Paper ID",
+          "id": "dbce693d-993e-4283-9a65-f45d6fe8b4c4",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"paper_id\":3\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/papers/download_citations",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "papers",
+                "download_citations"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "d3af5ab5-ae2d-4120-a71f-b6f449a9b525"
+    },
+    {
+      "name": "analysis",
+      "item": [
+        {
+          "name": "Get Analysis",
+          "id": "7e4076f8-7e94-4010-a5ed-04e4e47a5871",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/analysis/8",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "analysis",
+                "8"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Start Analysis",
+          "id": "2c3320b5-bb0d-4ed9-93f7-c4c1daccde7d",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/analysis/3",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "analysis",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Download + Analysis (下载引文并分析)",
+          "id": "0effefde-c39d-4345-a745-4fab4a72ae8b",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://localhost:5000/analysis_download/8",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "analysis_download",
+                "8"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Start Summarize (POST 异步启动总结)",
+          "id": "a1b2c3d4-e5f6-7890-abcd-summarize12345",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/analysis/8/summarize",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "analysis",
+                "8",
+                "summarize"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Summarize Result (GET 获取总结结果)",
+          "id": "b2c3d4e5-f6a7-8901-bcde-summarize23456",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/analysis/8/summarize",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "analysis",
+                "8",
+                "summarize"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "6517a045-a128-4bf7-abf4-f8add816913e"
+    },
+    {
+      "name": "4. Reports",
+      "item": [
+        {
+          "name": "Create Report (POST 创建联合报告)",
+          "id": "r1-create-report-001",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"paper_ids\": [8]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/reports",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "reports"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List Reports (用户报告列表)",
+          "id": "r2-list-reports-002",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/reports",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "reports"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Report Detail (报告详情)",
+          "id": "r3-get-report-003",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/reports/2",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "reports",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Download Report PDF",
+          "id": "r4-download-pdf-004",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/reports/2/download?format=pdf",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "reports",
+                "2",
+                "download"
+              ],
+              "query": [
+                {
+                  "key": "format",
+                  "value": "pdf",
+                  "uuid": "0f4249cd-32a6-46b0-8705-a7a9551bc424"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Download Report HTML",
+          "id": "r5-download-html-005",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/reports/2/download?format=html",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "reports",
+                "2",
+                "download"
+              ],
+              "query": [
+                {
+                  "key": "format",
+                  "value": "html",
+                  "uuid": "e2113d49-bdf5-42b2-8fd4-212d8e3c0799"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "4reports-0000-0000-0000-000000000001"
+    },
+    {
+      "name": "health",
+      "id": "022e5a81-f7b4-4f72-bcb0-a8c7449b4e66",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/health",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "health"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "serp_api",
+      "id": "e9697dac-c0d5-4db3-9847-6464dc710629",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://serpapi.com/search.json?q=Fourier Analysis Network&engine=google_scholar&hl=en&api_key=b2d95a6280994e63de6f22e250f1925cb9dc982c00b712fec9d183d9b66a1edb",
+          "protocol": "https",
+          "host": [
+            "serpapi",
+            "com"
+          ],
+          "path": [
+            "search.json"
+          ],
+          "query": [
+            {
+              "key": "as_sdt",
+              "value": "5%2C36",
+              "uuid": "9670ee56-60ff-4a22-a5c5-79e9d7025e9f",
+              "disabled": true
+            },
+            {
+              "key": "q",
+              "value": "Fourier Analysis Network",
+              "uuid": "e0e0f88a-6738-44d2-8202-5e5f24ade6ff"
+            },
+            {
+              "key": "engine",
+              "value": "google_scholar",
+              "uuid": "f4212c46-ab0e-4815-b128-8a275e3aa62f"
+            },
+            {
+              "key": "hl",
+              "value": "en",
+              "uuid": "3fa4e7ed-d27b-42d9-8750-6b68227c999b"
+            },
+            {
+              "key": "api_key",
+              "value": "b2d95a6280994e63de6f22e250f1925cb9dc982c00b712fec9d183d9b66a1edb",
+              "uuid": "b922f521-a2bc-4bfb-873f-22941d4f06a6"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "id": "0c5031aa-23cd-45ff-b9bb-c1a312d9e1cd",
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "id": "c8d1145f-fdd0-4c6b-871b-cf07a6d0719f",
+      "key": "base_url",
+      "value": "http://localhost:5000",
+      "type": "string"
+    }
+  ]
+}

@@ -1,0 +1,119 @@
+.task-management-page {
+  min-height: 100vh;
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.task-management-page .ant-card {
+  border: 1px solid #bbf7d0;
+  box-shadow: 0 8px 18px rgba(34, 197, 94, 0.08);
+  border-radius: 10px;
+}
+
+.task-management-page .ant-card-head {
+  background: linear-gradient(180deg, #f0fdf4 0%, #dcfce7 100%);
+}
+
+.task-management-page .ant-table-thead > tr > th {
+  background: #f0fdf4 !important;
+}
+
+.page-header {
+  margin-bottom: 24px;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.batch-upload {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.batch-upload-filename {
+  color: #666;
+}
+
+.batch-upload-tip {
+  color: #999;
+  font-size: 13px;
+}
+
+.batch-upload-preview {
+  border: 1px solid #bbf7d0;
+  border-radius: 6px;
+  padding: 12px;
+  background: #f0fdf4;
+}
+
+.batch-upload-preview-header {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.batch-upload-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.batch-upload-selected {
+  color: #666;
+  font-size: 12px;
+}
+
+.batch-upload-preview-list {
+  max-height: 260px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.batch-upload-checkbox-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.batch-upload-preview-item {
+  font-size: 13px;
+  color: #333;
+  background: #ffffff;
+  border: 1px solid #bbf7d0;
+  border-radius: 4px;
+  padding: 6px 8px;
+  cursor: pointer;
+}
+
+.batch-upload-empty {
+  color: #999;
+  font-size: 13px;
+}
+
+.batch-upload-error {
+  color: #ff4d4f;
+  font-size: 13px;
+}
+
+.batch-upload-more {
+  color: #999;
+  font-size: 12px;
+}
+
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+}
+
+

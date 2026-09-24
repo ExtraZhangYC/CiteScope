@@ -1,0 +1,95 @@
+.welcome-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 50%, #86efac 100%);
+  padding: 60px 20px;
+}
+
+.welcome-hero {
+  text-align: center;
+  color: white;
+  margin-bottom: 80px;
+  padding: 40px 20px;
+}
+
+.welcome-title {
+  color: white !important;
+  font-size: 48px !important;
+  margin-bottom: 20px !important;
+  font-weight: 700;
+}
+
+.welcome-subtitle {
+  color: rgba(255, 255, 255, 0.9) !important;
+  font-size: 20px;
+  margin-bottom: 40px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.welcome-cta-button {
+  height: 50px;
+  padding: 0 40px;
+  font-size: 16px;
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  border: none;
+}
+
+.welcome-cta-button:hover {
+  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+}
+
+.welcome-features {
+  max-width: 1200px;
+  margin: 0 auto 60px;
+  padding: 40px 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(34, 197, 94, 0.15);
+}
+
+.features-title {
+  text-align: center;
+  margin-bottom: 40px !important;
+}
+
+.feature-card {
+  height: 100%;
+  text-align: center;
+  border-radius: 8px;
+  transition: transform 0.3s;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(34, 197, 94, 0.2);
+}
+
+.welcome-info {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.info-list {
+  font-size: 16px;
+  line-height: 2;
+  color: #666;
+  padding-left: 20px;
+}
+
+.info-list li {
+  margin-bottom: 12px;
+}
+
+@media (max-width: 768px) {
+  .welcome-title {
+    font-size: 32px !important;
+  }
+  
+  .welcome-subtitle {
+    font-size: 16px;
+  }
+}
+
+
